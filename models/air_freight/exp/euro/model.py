@@ -2,6 +2,10 @@ from models.air_freight.exp.exp_repository import frankfrut_exp_data
 import pandas as pd
 from statsmodels.tsa.ar_model import AutoReg
 
+from common.utils.utils_air import model_common_settings
+
+model_setting = model_common_settings()
+
 # 각 공항별 운송료 데이터를 예측 모델에 적용하여 예측값 출력
 
 
@@ -20,7 +24,7 @@ def pred_freight_model(data):
     # 각 열마다 예측값을 새롭게 입력하는 다중 for문
     for col in only_cach_columns:
 
-        lag = 3
+        lag = model_setting.lag
         model = AutoReg(data[col], lags=lag)
         model_fit = model.fit()
 

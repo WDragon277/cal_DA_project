@@ -36,18 +36,18 @@ logger = logging.getLogger(__name__)
 # 항공운임 데이터 삽입
 if __name__ == '__main__':
 
-    # delete_ops_index(esinfo.air_save_index)
-    # logger.info("데이터 수정/삽입을 위해 기존의 항공운임 인덱스가 제거되었습니다.")
-    #
-    # save_asia_pred_exp()
-    # save_china_pred_exp()
-    # save_euro_pred_exp()
-    # save_usa_pred_exp()
-    #
-    # save_asia_pred_imp()
-    # save_china_pred_imp()
-    # save_euro_pred_imp()
-    # save_usa_pred_imp()
+    delete_ops_index(esinfo.air_save_index)
+    logger.info("데이터 수정/삽입을 위해 기존의 항공운임 인덱스가 제거되었습니다.")
+
+    save_asia_pred_exp()
+    save_china_pred_exp()
+    save_euro_pred_exp()
+    save_usa_pred_exp()
+
+    save_asia_pred_imp()
+    save_china_pred_imp()
+    save_euro_pred_imp()
+    save_usa_pred_imp()
 
     # 해상운임지수 예측 및 내용 저장
 

@@ -49,15 +49,17 @@ def shifted_data(df):
     tmp_df = df.copy()
     # 30일 이내 상관도가 가장 높은 이동 일자 구함
     shifted_num = df_corr_hrci(tmp_df)[0]
+
     # 상관도가 가장 높은 이동 일자를 적용한 데이터프레임을 생성
     # df_shifted = df_interpolated_filled.shift(shifted_num)
     tmp_df['rgsr_dt'] = tmp_df['rgsr_dt'].\
         apply(lambda x: x + pd.DateOffset(days=shifted_num))
+    logger.info(f'데이터의 기준 날짜가 변경되었습니다.{shifted_num}일')
     # tmp_df['rgsr_dt'] = tmp_df['rgsr_dt'].apply(lambda x) x.strtime('%Y%m%d')
 
     df_moved = tmp_df[['rgsr_dt', 'hrci_cach_expo']]
 
-    logger.info(f'데이터의 기준 날짜가 변경되었습니다.{shifted_num}일')
+
     logger.info('데이터분석에 사용될 데이터프레임이 생성 되었습니다.')
     return df_moved
 

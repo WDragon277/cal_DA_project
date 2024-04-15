@@ -2,15 +2,17 @@ import pandas as pd
 import numpy as np
 import sys
 
-from common.utils.utils import logger,searchAPI,switch_idx_data
+from common.utils.utils import logger,searchAPI,switch_idx_data, interpolation
 from sklearn.ensemble import GradientBoostingRegressor
 from models.sea_freight.hrci_p.repository import hrci_redifined_data, shifted_data
 
 def pred_hrci_model():
 
-    # 이동된 데이터와 원본데이터 불러오기
+    # 원본데이터와 이동된 데이터 불러오기
     data = hrci_redifined_data()
     df_moved = shifted_data(data)
+
+    # 이동 데이터 날짜를 원래대로 변경하기
 
     # 날짜 형식 맞춰 주기
     data['rgsr_dt'] = data['rgsr_dt'].apply(lambda x: x.strftime('%Y%m%d'))
@@ -21,8 +23,8 @@ def pred_hrci_model():
     df_moved = df_moved.set_index('rgsr_dt')
 
     # 데이터 정제를 위한 카피데이터 생성
-    data_copy = df_moved
-    # data_copy = data.drop(['bdi_cach_expo', 'hrci_cach_expo', 'kcci_cach_expo'], axis=1).copy()
+    # data_copy = data.copy()
+    data_copy = data.drop(['hrci_cach_expo'], axis=1).copy()
 
     # 두 데이터프레임 Join 및 na값 삭제
     train_data = pd.merge(data_copy, df_moved, left_index=True, right_index=True, how='outer')
