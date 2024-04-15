@@ -1,4 +1,5 @@
-from models.air_freight.export.exp_repository import frankfrut_exp_data
+from models.air_freight.exp.exp_repository import la_exp_data, newyork_exp_data,\
+    chicago_exp_data, sfo_exp_data, atl_exp_data
 import pandas as pd
 from statsmodels.tsa.ar_model import AutoReg
 
@@ -44,7 +45,7 @@ def pred_freight_model(data):
 if __name__== '__main__':
 
     # test sample
-    data = frankfrut_exp_data
+    data = la_exp_data
     result = pred_freight_model(data)
     result[['data_cd','dptr_cnty','arvl_cnty']] = result[['data_cd', 'dptr_cnty', 'arvl_cnty']].ffill()
     print(result)

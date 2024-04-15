@@ -2,9 +2,12 @@ import pandas as pd
 import numpy as np
 from common.utils.utils import searchAPI, switch_idx_data
 
+from common.utils.setting import EsSetting
+
+esinfo = EsSetting()
 
 def bdi_raw_data():
-    tmp = searchAPI("dgl_idx_expo_lst")
+    tmp = searchAPI(esinfo.sea_read_index)
     df = switch_idx_data(tmp)
     df_bdi = df[['rgsr_dt','bdi_cach_expo']]
     df_bdi = df_bdi.replace({np.nan: np.nan})
@@ -12,7 +15,7 @@ def bdi_raw_data():
 
 
 def usdx_raw_data():
-    tmp = searchAPI("dgl_idx_usdx_data_sample")
+    tmp = searchAPI(esinfo.usd_read_index)
     df_usdx = tmp[['sbmt_dt','lprc']].copy()
     df_usdx['sbmt_dt'] = pd.to_datetime(df_usdx['sbmt_dt'])
     df_usdx['sbmt_dt'] = df_usdx['sbmt_dt'].dt.strftime('%Y%m%d')
@@ -21,7 +24,7 @@ def usdx_raw_data():
 
 
 def raw_maters_price():
-    tmp = searchAPI('dgl_idx_koreapds_lst')
+    tmp = searchAPI(esinfo.pds_read_index)
     copper_price = tmp[tmp['data_cd'] == '11'][['ref_dt','prlst_amt']]
     dubai_crud = tmp[tmp['data_cd'] == '01'][['ref_dt','prlst_amt']]
 

@@ -1,6 +1,6 @@
 import pandas as pd
 from statsmodels.tsa.ar_model import AutoReg
-from models.scfi_p.repository import scfi_raw_data
+from models.sea_freight.scfi_p.repository import scfi_raw_data
 
 # scfi 모델 훈련 및 예상 결과 도출
 def pred_scfi_model():

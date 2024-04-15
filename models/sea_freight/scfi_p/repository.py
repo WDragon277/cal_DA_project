@@ -2,10 +2,13 @@ import pandas as pd
 import numpy as np
 from common.utils.utils import searchAPI, switch_idx_data, logger, make_dates
 
+from common.utils.setting import EsSetting
+
+esinfo = EsSetting()
 
 def scfi_raw_data():
 
-    tmp = searchAPI("dgl_idx_expo_lst")
+    tmp = searchAPI(esinfo.sea_read_index)
     # Classify the index (for scfi)
     df = switch_idx_data(tmp)
     df_scfi = df[['rgsr_dt', 'scfi_cach_expo']]

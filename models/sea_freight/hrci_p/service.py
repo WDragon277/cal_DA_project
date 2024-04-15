@@ -1,7 +1,7 @@
 import json
 import pandas as pd
 from elasticsearch import Elasticsearch, helpers
-from models.hrci_p.model import pred_hrci_model
+from models.sea_freight.hrci_p.model import pred_hrci_model
 from common.utils.setting import EsSetting
 
 import logging
@@ -13,7 +13,7 @@ esinfo = EsSetting()
 es = Elasticsearch(esinfo.IP, basic_auth=(esinfo.ID, esinfo.PW))
 
 # Index name and document type
-index_name = 'dgl_idx_expo_pred_lst'
+index_name = esinfo.sea_save_index
 doc_type = '_doc'
 
 

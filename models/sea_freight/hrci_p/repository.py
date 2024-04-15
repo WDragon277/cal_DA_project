@@ -3,10 +3,13 @@ import datetime
 from common.utils.utils import interpolation, df_corr_hrci, logger
 from common.utils.utils import searchAPI, switch_idx_data, logger, make_dates
 
+from common.utils.setting import EsSetting
+
+esinfo = EsSetting()
 
 def hrci_redifined_data():
 
-    tmp = searchAPI("dgl_idx_expo_lst")
+    tmp = searchAPI(esinfo.sea_read_index)
 
     # Classify the index (for ccfi)
     df_total = switch_idx_data(tmp)
@@ -21,8 +24,9 @@ def hrci_redifined_data():
     first_non_nan_index = non_nan_indices[0]
     last_non_nan_index = non_nan_indices[-1]
 
-    # HRCI이 존재 하는 데이터 구간 분리
+    # HRCI이 존재 하는 데이터 구간 및 칼럼 분리
     sliced_df = df_total.loc[first_non_nan_index:last_non_nan_index]
+    sliced_df = sliced_df[['rgsr_dt', 'scfi_cach_expo', 'hrci_cach_expo', 'ccfi_cach_expo']]
 
     # 보간법 적용
     df_interpolated = interpolation(sliced_df)

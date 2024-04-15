@@ -1,6 +1,6 @@
 import pandas as pd
 from elasticsearch import Elasticsearch, helpers
-from models.bdi_p.model import pred_bdi_model
+from models.sea_freight.bdi_p.model import pred_bdi_model
 from common.utils.setting import EsSetting
 
 
@@ -13,7 +13,7 @@ esinfo = EsSetting()
 es = Elasticsearch(esinfo.IP, basic_auth=(esinfo.ID, esinfo.PW))
 
 # Index name and document type
-index_name = 'dgl_idx_expo_pred_lst'
+index_name = esinfo.sea_save_index
 doc_type = '_doc'
 
 # make predicted data

@@ -1,6 +1,6 @@
 import pandas as pd
 from statsmodels.tsa.ar_model import AutoReg
-from models.kcci_p.repository import kcci_raw_data
+from models.sea_freight.kcci_p.repository import kcci_raw_data
 
 # kcci 모델 훈련 및 예상 결과 도출
 def pred_kcci_model():

@@ -4,7 +4,7 @@ import sys
 
 from common.utils.utils import logger,searchAPI,switch_idx_data
 from sklearn.ensemble import GradientBoostingRegressor
-from models.hrci_p.repository import hrci_redifined_data, shifted_data
+from models.sea_freight.hrci_p.repository import hrci_redifined_data, shifted_data
 
 def pred_hrci_model():
 
@@ -21,7 +21,8 @@ def pred_hrci_model():
     df_moved = df_moved.set_index('rgsr_dt')
 
     # 데이터 정제를 위한 카피데이터 생성
-    data_copy = data.drop(['bdi_cach_expo', 'hrci_cach_expo', 'kcci_cach_expo'], axis=1).copy()
+    data_copy = df_moved
+    # data_copy = data.drop(['bdi_cach_expo', 'hrci_cach_expo', 'kcci_cach_expo'], axis=1).copy()
 
     # 두 데이터프레임 Join 및 na값 삭제
     train_data = pd.merge(data_copy, df_moved, left_index=True, right_index=True, how='outer')

@@ -3,7 +3,7 @@ from elasticsearch import Elasticsearch, helpers
 import logging
 
 from common.utils.setting import EsSetting
-from models.ccfi_p.model import pred_ccfi_model
+from models.sea_freight.ccfi_p.model import pred_ccfi_model
 
 logging.basicConfig(level=logging.INFO,format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -13,7 +13,7 @@ esinfo = EsSetting()
 es = Elasticsearch(esinfo.IP, basic_auth=(esinfo.ID, esinfo.PW))
 
 # Index name and document type
-index_name = 'dgl_idx_expo_pred_lst'
+index_name = esinfo.sea_save_index
 doc_type = '_doc'
 
 

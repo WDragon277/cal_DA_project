@@ -5,6 +5,8 @@ from matplotlib import pyplot as plt
 
 from common.utils.setting import EsSetting
 
+esinfo = EsSetting()
+
 import logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
@@ -37,6 +39,17 @@ def searchAPI(index_name):
     res = pd.DataFrame([hit['_source'] for hit in result['hits']['hits']])
 
     return res
+
+
+# Delete the index
+def delete_ops_index(index_name):
+
+    es = Elasticsearch(esinfo.IP, basic_auth=(esinfo.ID, esinfo.PW))  # ops
+
+    if es.indices.exists(index=index_name):
+        es.indices.delete(index=index_name)
+        logger.info("데이터 수정/삽입을 위해 기존의 인덱스가 제거되었습니다.")
+
 
 
 # 인덱스 데이터 행렬 변환
