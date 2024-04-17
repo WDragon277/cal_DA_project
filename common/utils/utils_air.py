@@ -3,7 +3,8 @@ from elasticsearch import Elasticsearch, helpers
 from common.utils.setting import EsSetting
 
 
-class model_common_settings():
+class ModelCommonSettings:
 
     def __init__(self):
-        self.lag = 7
+        self.lag = 6
+        self.period = 6

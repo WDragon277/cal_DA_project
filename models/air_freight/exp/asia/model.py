@@ -3,9 +3,9 @@ from models.air_freight.exp.exp_repository import kuala_exp_data, singapor_exp_d
 import pandas as pd
 from statsmodels.tsa.ar_model import AutoReg
 
-from common.utils.utils_air import model_common_settings
+from common.utils.utils_air import ModelCommonSettings
 
-model_setting = model_common_settings()
+model_setting = ModelCommonSettings()
 
 # 각 공항별 운송료 데이터를 예측 모델에 적용하여 예측값 출력
 
@@ -30,7 +30,7 @@ def pred_freight_model(data):
         model_fit = model.fit()
 
         # predict for three month
-        predictions = model_fit.predict(start=len(data), end=len(data) + 2)
+        predictions = model_fit.predict(start=len(data), end=len(data) + model_setting.period)
 
         # Make date_index of result
         last_date = str(data.index[-1])
