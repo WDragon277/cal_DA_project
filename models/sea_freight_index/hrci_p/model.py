@@ -4,7 +4,7 @@ import sys
 
 from common.utils.utils import logger,searchAPI,switch_idx_data, interpolation
 from sklearn.ensemble import GradientBoostingRegressor
-from models.sea_freight.hrci_p.repository import hrci_redifined_data, shifted_data
+from models.sea_freight_index.hrci_p.repository import hrci_redifined_data, shifted_data
 
 def pred_hrci_model():
 
@@ -112,5 +112,6 @@ def pred_hrci_model():
 #     return result_df
 
 if __name__=='__main__':
+
     result = pred_hrci_model()
     print(result)

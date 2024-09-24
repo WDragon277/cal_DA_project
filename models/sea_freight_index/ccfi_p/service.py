@@ -3,7 +3,7 @@ from elasticsearch import Elasticsearch, helpers
 import logging
 
 from common.utils.setting import EsSetting
-from models.sea_freight.ccfi_p.model import pred_ccfi_model
+from models.sea_freight_index.ccfi_p.model import pred_ccfi_model
 
 logging.basicConfig(level=logging.INFO,format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)

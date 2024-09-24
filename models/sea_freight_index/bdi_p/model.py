@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.ensemble import GradientBoostingRegressor
 import numpy as np
-from models.sea_freight.bdi_p.repository import bdi_raw_data, usdx_raw_data, raw_maters_price, raw_data_merge
+from models.sea_freight_index.bdi_p.repository import bdi_raw_data, usdx_raw_data, raw_maters_price, raw_data_merge
 
 
 def data_define():
@@ -50,3 +50,8 @@ def pred_bdi_model():
         result_df.loc[new_row] = row
 
     return result_df
+
+if __name__=='__main__':
+
+    print(pred_bdi_model())
+

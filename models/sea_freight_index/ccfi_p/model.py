@@ -1,6 +1,6 @@
 import pandas as pd
 from statsmodels.tsa.ar_model import AutoReg
-from models.sea_freight.ccfi_p.repository import ccfi_raw_data
+from models.sea_freight_index.ccfi_p.repository import ccfi_raw_data
 
 # 모델에 사용할 데이터 정제
 def define_ccfi_data():
@@ -50,5 +50,8 @@ def pred_ccfi_model():
 
 
 if __name__ == "__main__":
-    defined_data = define_ccfi_data()
-    pred_ccfi_model(defined_data)
+
+    # defined_data = define_ccfi_data()
+    # pred_ccfi_model(defined_data)
+
+    print(pred_ccfi_model())

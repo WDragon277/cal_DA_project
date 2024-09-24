@@ -51,5 +51,5 @@ if __name__== '__main__':
     # test sample
     data = kuala_exp_data
     result = pred_freight_model(data)
-    result[['data_cd','dptr_cnty','arvl_cnty']] = result[['data_cd', 'dptr_cnty', 'arvl_cnty']].ffill()
+    result[['data_cd', 'dptr_cnty', 'arvl_cnty']] = result[['data_cd', 'dptr_cnty', 'arvl_cnty']].ffill()
     print(result)

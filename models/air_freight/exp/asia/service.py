@@ -34,7 +34,6 @@ def insert_air_pred(df_data):
 
 
 # 예측값 생성 및 데이터 삽입을 위한 정제
-
 # 모델 사용 해서 예측값 생성
 
 def save_asia_pred_exp():

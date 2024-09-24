@@ -11,10 +11,6 @@ import logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-class Logger:
-    logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-    logger = logging.getLogger(__name__)
-
 
 def searchAPI(index_name):
 
@@ -42,7 +38,7 @@ def searchAPI(index_name):
 
 
 # Delete the index
-def delete_ops_index(index_name):
+def delete_index(index_name):
 
     es = Elasticsearch(esinfo.IP, basic_auth=(esinfo.ID, esinfo.PW))  # ops
 

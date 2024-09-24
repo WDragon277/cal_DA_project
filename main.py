@@ -12,20 +12,24 @@ from models.air_freight.imp.usa.service import save_usa_pred_imp
 from elasticsearch import Elasticsearch, helpers
 import logging
 
-from models.sea_freight.bdi_p.service import predict_bdi
-from models.sea_freight.ccfi_p.service import predict_ccfi
-from models.sea_freight.kcci_p.service import predict_kcci
-from models.sea_freight.hrci_p.service import predict_hrci
-from models.sea_freight.scfi_p.service import predict_scfi
+# 예측 값 생성 함수
+from models.sea_freight_index.bdi_p.service import predict_bdi
+from models.sea_freight_index.ccfi_p.service import predict_ccfi
+from models.sea_freight_index.kcci_p.service import predict_kcci
+from models.sea_freight_index.hrci_p.service import predict_hrci
+from models.sea_freight_index.scfi_p.service import predict_scfi
 
-from models.sea_freight.bdi_p.service import insert_bdi
-from models.sea_freight.ccfi_p.service import insert_ccfi
-from models.sea_freight.kcci_p.service import insert_kcci
-from models.sea_freight.hrci_p.service import insert_hrci
-from models.sea_freight.scfi_p.service import insert_scfi
+# 예측 값 삽입 함수
+from models.sea_freight_index.bdi_p.service import insert_bdi
+from models.sea_freight_index.ccfi_p.service import insert_ccfi
+from models.sea_freight_index.kcci_p.service import insert_kcci
+from models.sea_freight_index.hrci_p.service import insert_hrci
+from models.sea_freight_index.scfi_p.service import insert_scfi
 
-from common.utils.utils import delete_ops_index
+# ES 인덱스 내용 삭제 함수
+from common.utils.utils import delete_index
 
+# ES 세팅값 클래스
 from common.utils.setting import EsSetting
 
 esinfo = EsSetting()
@@ -36,7 +40,7 @@ logger = logging.getLogger(__name__)
 # 항공운임 데이터 삽입
 if __name__ == '__main__':
 
-    delete_ops_index(esinfo.air_save_index)
+    delete_index(esinfo.air_save_index)
     logger.info("데이터 수정/삽입을 위해 기존의 항공운임 인덱스가 제거되었습니다.")
 
     save_asia_pred_exp()
@@ -65,7 +69,7 @@ if __name__ == '__main__':
     predict_scfi_data = predict_scfi()
 
     # Delete the index
-    delete_ops_index(esinfo.sea_save_index)
+    delete_index(esinfo.sea_save_index)
     logger.info("데이터 수정/삽입을 위해 기존의 해상인덱스 인덱스가 제거되었습니다.")
 
     # Insert generated data

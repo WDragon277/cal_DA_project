@@ -8,7 +8,9 @@ class EsSetting:
         self.ID = 'elastic'
         self.PW = '1q2w3e4r5t'
         self.sea_read_index = 'cal_idx_expo_lst'
-        self.sea_save_index = 'cal_idx_sea_pred_lst'
+        self.sea_save_index = 'dgl_idx_expo_pred_lst' # tmp index
+        # self.sea_save_index = 'cal_idx_expo_pred_lst'
+        self.sea_read_freight = 'cal_idx_kcla_sea_cach_lst'
         self.air_read_index = 'cal_idx_kcla_air_cach_lst'
         self.air_save_index = 'cal_idx_air_pred_lst'
         self.pds_read_index = 'cal_idx_koreapds_lst'
@@ -16,7 +18,7 @@ class EsSetting:
         self.tmp = 'dgl_idx_expo_lst'
 
 
-    # def sea_freight(self):
+    # def sea_freight_index(self):
     #     self.read_index = 'cal_idx_expo_lst'
     #     self.save_index = 'cal_idx_expo_pred_lst'
     #
