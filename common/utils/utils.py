@@ -11,7 +11,7 @@ import logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-
+# elascit search 데이터 호출 함수
 def searchAPI(index_name):
 
     '''
@@ -47,8 +47,7 @@ def delete_index(index_name):
         logger.info("데이터 수정/삽입을 위해 기존의 인덱스가 제거되었습니다.")
 
 
-
-# 인덱스 데이터 행렬 변환
+# 인덱스 데이터 행렬 변환 함수
 def switch_idx_data(df):
 
     '''
@@ -125,7 +124,7 @@ def switch_idx_data(df):
 
     return df_total
 
-
+# 보간법 적용 함수
 def interpolation(df):
     result = df.interpolate()
     return result
@@ -227,21 +226,6 @@ def draw_graph(df_total,index):
     plt.ylabel('Cach_expo')
     plt.show()
 
-
-def draw_heatmap(df):
-    heatmap = sns.heatmap(df.corr(), annot=True, cmap='coolwarm')
-    heatmap.set_xticklabels(heatmap.get_xticklabels(), rotation=45, ha='right')
-    plt.show()
-
-# 데이터 불러오기
-
-from elasticsearch import Elasticsearch as es
-# from matplotlib import font_manager, rc
-# font_path = "C:/Windows/Fonts/NGULIM.TTF"
-# font = font_manager.FontProperties(fname=font_path).get_name()
-# rc('font', family=font)
-
-
 # 엘라스틱 서치에서 데이터 호출 "dgl_idx_expo_lst"
 def raw_data(index):
 
@@ -253,7 +237,32 @@ def raw_data(index):
 
     return df_interpolated
 
+# ================= 해상운임 예측모델 적용 함수 ====================
+import numpy as np
+from sklearn.neural_network import MLPRegressor
 
+# 모델을 훈련시키는 함수
+def model_fitting_seafreight(lags, train_data, for_period, X_train, y_train, model):
+    for train_num in range(lags, len(train_data) - for_period):
+        X_train.append(train_data['cach_amt'].iloc[(train_num - lags):train_num]) # lag 값 만큼의 학습 데이터(12개월)
+        y_train.append(train_data['cach_amt'].iloc[(train_num + for_period - 1)]) # 학습의 타깃값
+    X_train = np.array(X_train)
+    y_train = np.array(y_train)
+    model.fit(X_train, y_train)
+
+# 훈련된 모델로 예측 값을 출력하는 함수
+def model_predict_seafreight(lags, validation_data, for_period, X_test, y_test, model):
+    for val_num in range(lags, len(validation_data) - for_period):
+        X_test.append(validation_data.iloc[(val_num - lags):val_num])
+        y_test.append(validation_data.iloc[(val_num + for_period - 1)])
+
+    X_test = np.array(X_test)
+    y_test = np.array(y_test)
+    predictions = model.predict(X_test)
+
+    return predictions
+
+# ================= 기타 함수 ====================
 # 엘라스틱서치 doc 타입 설정 (데이터 입력시 활용)
 def doc_type_setting(index):
     if index == 'dgl_idx_expo_pred':
@@ -287,9 +296,7 @@ def doc_type_setting(index):
         }
     return document
 
-# 엘라스틱서치에 csv 데이터 입력
-
-
-# if __name__=='__main__':
-#     a = defined_data()
-#     print(a)
+def draw_heatmap(df):
+    heatmap = sns.heatmap(df.corr(), annot=True, cmap='coolwarm')
+    heatmap.set_xticklabels(heatmap.get_xticklabels(), rotation=45, ha='right')
+    plt.show()
