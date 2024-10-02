@@ -29,18 +29,18 @@ def predict_bdi():
                             )
 
     # make data to adaptable doc_type for es
-    df_data = []
+    dict_data = []
     for index, row in df_data_source.iterrows():
-        df_data.append({"_index": index_name,
+        dict_data.append({"_index": index_name,
                         "_source": {
                             "data_cd": "bdi",
                             "rgsr_dt": row['rgsr_dt'],
                             "cach_expo": row['cach_expo']
                                 }})
-    return df_data
+    return dict_data
 
 
-def insert_bdi(df_data):
+def insert_bdi(dict_data):
 
     if not es.indices.exists(index=index_name):
         # Create the index
@@ -48,5 +48,5 @@ def insert_bdi(df_data):
         logger.info("새로운 인덱스가 생성되었습니다.")
 
     # Insert data into Elasticsearch
-    helpers.bulk(es, df_data)
+    helpers.bulk(es, dict_data)
 

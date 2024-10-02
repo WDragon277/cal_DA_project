@@ -1,6 +1,6 @@
 import pandas as pd
 import seaborn as sns
-from elasticsearch import Elasticsearch # elasticsearch==8.8.2 필요
+from elasticsearch import Elasticsearch, helpers # elasticsearch==8.8.2 필요
 from matplotlib import pyplot as plt
 
 from common.utils.setting import EsSetting
@@ -46,6 +46,18 @@ def delete_index(index_name):
         es.indices.delete(index=index_name)
         logger.info("데이터 수정/삽입을 위해 기존의 인덱스가 제거되었습니다.")
 
+# Insert the index
+def insert_index(index_name, result_predict):
+
+    es = Elasticsearch(esinfo.IP, basic_auth=(esinfo.ID, esinfo.PW))
+
+    if not es.indices.exists(index=index_name):
+        # Create the index
+        es.indices.create(index=index_name)
+        logger.info("새로운 인덱스가 생성되었습니다.")
+
+    # Insert data into Elasicsearch
+    helpers.bulk(es, result_predict)
 
 # 인덱스 데이터 행렬 변환 함수
 def switch_idx_data(df):

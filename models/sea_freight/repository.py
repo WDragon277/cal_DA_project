@@ -17,12 +17,18 @@ from sklearn.metrics import mean_absolute_error
 from common.utils.utils import searchAPI, switch_idx_data
 from common.utils.setting import EsSetting
 
+
 esinfo = EsSetting()
 
-sea_freight_data = searchAPI(esinfo.sea_read_freight)
+# Index name and document type
+index_name = esinfo.sea_save_freight
+
+sea_freight_data = searchAPI(index_name)
 
 by_sea_route_tables = {}
 key_list = []
+
+
 
 # key가 되는 컬럼(data_cd, dptr_cnty, arvl_cnty)으로 groupby 시행
 for key, group in sea_freight_data.groupby(['data_cd', 'dptr_cnty', 'arvl_cnty']):
@@ -33,3 +39,6 @@ for key, group in sea_freight_data.groupby(['data_cd', 'dptr_cnty', 'arvl_cnty']
   key_list.append(key)
 
 
+if __name__ == '__main__':
+
+  pass

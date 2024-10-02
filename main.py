@@ -1,30 +1,36 @@
-# 각 모델들을 실행하는 서비스 순차적으로 수행 및 로그 남기는 스크립트 제작
+from elasticsearch import Elasticsearch, helpers
+import logging
+# ===== 항공운임의 각 모델들을 실행하는 함수 불러오기 =====
+# 수출 항공운임 예측 데이터 생성
 from models.air_freight.exp.asia.service import save_asia_pred_exp
 from models.air_freight.exp.china.service import save_china_pred_exp
 from models.air_freight.exp.euro.service import save_euro_pred_exp
 from models.air_freight.exp.usa.service import save_usa_pred_exp
-
+# 수입 항공운임 예측 데이터 생성
 from models.air_freight.imp.asia.service import save_asia_pred_imp
 from models.air_freight.imp.china.service import save_china_pred_imp
 from models.air_freight.imp.euro.service import save_euro_pred_imp
 from models.air_freight.imp.usa.service import save_usa_pred_imp
 
-from elasticsearch import Elasticsearch, helpers
-import logging
-
-# 예측 값 생성 함수
+# ===== 해상운임 인덱스 각 모델을 실행하는 함수 불러오기 =====
+# 해상운임 인덱스 예측 값 생성 함수
 from models.sea_freight_index.bdi_p.service import predict_bdi
 from models.sea_freight_index.ccfi_p.service import predict_ccfi
 from models.sea_freight_index.kcci_p.service import predict_kcci
 from models.sea_freight_index.hrci_p.service import predict_hrci
 from models.sea_freight_index.scfi_p.service import predict_scfi
 
-# 예측 값 삽입 함수
+# 해상운임 인덱스 예측 값 삽입 함수
 from models.sea_freight_index.bdi_p.service import insert_bdi
 from models.sea_freight_index.ccfi_p.service import insert_ccfi
 from models.sea_freight_index.kcci_p.service import insert_kcci
 from models.sea_freight_index.hrci_p.service import insert_hrci
 from models.sea_freight_index.scfi_p.service import insert_scfi
+
+# ===== 해상운임 예측 값 =====
+
+
+# ===== 기타 =====
 
 # ES 인덱스 내용 삭제 함수
 from common.utils.utils import delete_index
@@ -102,3 +108,14 @@ if __name__ == '__main__':
         logger.info("scfi 데이터가 입력 되었습니다.")
     except Exception as e:
         logger.error("scfi 데이터 삽입에 오류가 발생하였습니다.")
+
+
+
+    # 해상운임 예측 내용 저장
+    from models.sea_freight.service import insert_sea_freight, dict_save_data
+
+    try:
+        insert_sea_freight(esinfo.sea_save_freight, dict_save_data)
+        logger.info("해상운임 예측 값 전체가 입력되었습니다.")
+    except Exception as e:
+        logger.info("해상운임 예측값 삽입에 오류가 발생하였습니다.")
