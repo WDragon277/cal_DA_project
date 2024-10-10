@@ -5,6 +5,7 @@ from matplotlib import pyplot as plt
 
 from common.utils.setting import EsSetting
 
+
 esinfo = EsSetting()
 
 import logging
@@ -25,14 +26,18 @@ def searchAPI(index_name):
     es = Elasticsearch(esinfo.IP, basic_auth=(esinfo.ID, esinfo.PW))
     index = index_name
     body = {
-        # 'size': 10000,
         'query':{
             'match_all': {}
         }
     }
-    result = es.search(index=index, body=body, size=10000)
+    response = es.search(index=index, body=body, size=10000)
     logger.info('데이터베이스에 접속 성공했습니다.')
-    res = pd.DataFrame([hit['_source'] for hit in result['hits']['hits']])
+    res = pd.DataFrame([hit['_source'] for hit in response['hits']['hits']])
+
+    # 검색된 전체 문서 수 가져오기
+    total_rows = response['hits']['total']['value']
+    # 로거로 출력
+    logger.info(f"총 {total_rows}개의 문서가 검색되었습니다.")
 
     return res
 
@@ -58,6 +63,7 @@ def insert_index(index_name, result_predict):
 
     # Insert data into Elasicsearch
     helpers.bulk(es, result_predict)
+    # logger.info(f'{index_name}에 데이터가 삽입되었습니다.')
 
 # 인덱스 데이터 행렬 변환 함수
 def switch_idx_data(df):
