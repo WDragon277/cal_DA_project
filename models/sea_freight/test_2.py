@@ -32,7 +32,7 @@ class MLPRModel:
     def data_split(self, data):
         train_data = data['cach_amt'][:-self.validation_size]
         validation_data = data['cach_amt'][-self.validation_size:]
-        predict_data = data['cach_amt'][-self.for_period - self.lags:]
+        predict_data = data['cach_amt'][-self.for_period-self.lags:]
         return train_data, validation_data, predict_data
 
     def prepare_train_data(self, train_data):
@@ -92,13 +92,32 @@ def delete_index(index_name):
         es.indices.delete(index=index_name)
         logger.info("데이터 수정/삽입을 위해 기존의 인덱스가 제거되었습니다.")
 
+def date_setting(df_prediction, last_date, key_list):
+    # ==== 인덱스 추가하기 위한 작업 ====
+    # 날짜의 데이터 타입 맞추기
+    last_date = pd.to_datetime(last_date, format='%Y%m')
 
+    # ==== 예측 시작 년월 세팅 ==== #
+    # 데이터의 마지막 년월 1개월 이후를 기준으로 삼음
+    predicted_start_month = last_date + pd.DateOffset(months=1)
+    # 예측 시작 년울 구간 인덱스로 생성
+    predict_range_month = pd.date_range(start=predicted_start_month, periods=6, freq='ME')
+    # 날짜 표시 형태 일치
+    predict_range_month = predict_range_month.strftime('%Y%m')
+
+    # 인덱스(예측 날짜) 설정
+    df_prediction = df_prediction.set_index(predict_range_month)
+    # 칼럼 설정
+    df_prediction.columns = key_list
+    return df_prediction
 
 
 
 if __name__ == '__main__':
 
     total_test = {}
+    prediction_result = {}
+    last_date = float()
 
     for i in tqdm(range(len(key_list))):
 
@@ -112,8 +131,12 @@ if __name__ == '__main__':
         data = data.reset_index(drop=True)
         data = data.set_index('year_mon')
 
+        # 마지막날 추출
+        last_date = data.index[-1]
+
         # 데이터 분리
         train_data, validation_data, predict_data = model_trainer.data_split(data)
+
 
         # 학습 데이터 분리 & 검증 데이터 분리 & 예측 활용 데이터 분리
         x_train, y_train = model_trainer.prepare_train_data(train_data)
@@ -121,7 +144,7 @@ if __name__ == '__main__':
         x_predcit = model_trainer.prepare_predict_data(predict_data)
 
         # 모델 학습
-        num_iterations = 30
+        num_iterations = 1
         mae_results = []
 
         for _ in tqdm(range(num_iterations)):
@@ -140,10 +163,8 @@ if __name__ == '__main__':
         # 항로별 학습 결과
         total_test[key_list[i]] = [model_trainer.current_min_mae, model_trainer.model]
 
-    # ==== 업로드를 위한 예측 데이터 생성 ====
-    # 훈련된 항로별 모델을 활용 해서 예측값 저장
-    prediction_result = {}
-    for i in range(len(key_list)):
+        # ==== 업로드를 위한 예측 데이터 생성 ====
+        # 훈련된 항로 모델을 활용 해서 예측값 저장
         min_mae_model = total_test[key_list[i]][1]
 
         # 해상운임 항로를 키로 세팅, 예측값 저장
@@ -152,24 +173,8 @@ if __name__ == '__main__':
     # 전체 데이터 데이터프레임으로 변환
     df_prediction = pd.DataFrame(prediction_result)
 
-    # ==== 인덱스 추가하기 위한 작업 ==== # input: predict_data, key_list-> output df_prediction
-    # 마지막 날짜확인
-    last_date = predict_data.index[-1]
-    # 날짜의 데이터 타입 맞추기
-    last_date = pd.to_datetime(last_date, format='%Y%m')
-
-    # ==== 예측 시작 년월 세팅 ==== #
-    # 데이터의 마지막 년월 1개월 이후를 기준으로 삼음
-    predicted_start_month = last_date + pd.DateOffset(months=1)
-    # 예측 시작 년울 구간 인덱스로 생성
-    predict_range_month = pd.date_range(start=predicted_start_month, periods=6, freq='ME')
-    # 날짜 표시 형태 일치
-    predict_range_month = predict_range_month.strftime('%Y%m')
-
-    # 인덱스(예측 날짜) 설정
-    df_prediction = df_prediction.set_index(predict_range_month)
-    # 칼럼 설정
-    df_prediction.columns = key_list
+    # ==== 예측값 날짜 인덱스 추가 작업 ==== #
+    df_prediction = date_setting(df_prediction, last_date, key_list)
 
 # 예측데이터를 JSON으로 저장
     rows = []

@@ -12,17 +12,20 @@ from common.utils.setting import EsSetting
 from common.utils.utils import insert_index
 from common.utils.utils import delete_index
 
+from sklearn.preprocessing import StandardScaler
+
+scaler = StandardScaler()
+
 esinfo = EsSetting()
 es = Elasticsearch(esinfo.IP, basic_auth=(esinfo.ID, esinfo.PW))
-index_name = esinfo.sea_save_freight
+index_name = esinfo.sea_read_freight
 
 
 total_test = {}
+# 모델 훈련을 실시할 객체를 생성
+model_trainer = MLPRModel()
 
 for i in tqdm(range(len(key_list))):
-
-    # 모델 훈련을 실시할 객체를 생성
-    model_trainer = MLPRModel()
 
     # 데이터 불러오기
     data = by_sea_route_tables[key_list[i]]
@@ -82,7 +85,7 @@ last_date = pd.to_datetime(last_date, format='%Y%m')
 # 데이터의 마지막 년월 1개월 이후를 기준으로 삼음
 predicted_start_month = last_date + pd.DateOffset(months=1)
 # 예측 시작 년울 구간 인덱스로 생성
-predict_range_month = pd.date_range(start=predicted_start_month, periods=6, freq='ME')
+predict_range_month = pd.date_range(start=predicted_start_month, periods=model_trainer.for_period, freq='ME')
 # 날짜 표시 형태 일치
 predict_range_month = predict_range_month.strftime('%Y%m')
 
@@ -109,6 +112,8 @@ df_result_predict = pd.DataFrame(rows)
 # ==== 기존데이터와 예측데이터 합치기 ====
 # 기존 데이터 불러오기
 df_raw_data = sea_freight_data
+# 기존 데이터 정규화
+# df_raw_data['cach_amt'] = scaler.fit_transform(df_raw_data[['cach_amt']])
 
 # 기존 데이터와 예측 데이터 concat
 df_save_data = pd.concat([df_raw_data, df_result_predict], ignore_index=True, join='inner')
@@ -116,9 +121,9 @@ df_save_data = pd.concat([df_raw_data, df_result_predict], ignore_index=True, jo
 df_save_data = df_save_data.sort_values(['data_cd', 'dptr_cnty', 'arvl_cnty', 'year_mon', 'cach_amt'])
 
 rows = []
-
+save_index_name = esinfo.sea_save_freight
 for idx, row in df_save_data.iterrows():
-    rows.append({"_index": index_name,
+    rows.append({"_index": save_index_name,
                  "_source": {
                      "data_cd": row.iloc[0],
                      "dptr_cnty": row.iloc[1],

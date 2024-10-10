@@ -21,7 +21,7 @@ from common.utils.setting import EsSetting
 esinfo = EsSetting()
 
 # Index name and document type
-index_name = esinfo.sea_save_freight
+index_name = esinfo.sea_read_freight
 
 sea_freight_data = searchAPI(index_name)
 
