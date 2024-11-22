@@ -1,3 +1,9 @@
+import sys
+sys.stdout.reconfigure(encoding='utf-8')  # 터미널 출력 인코딩을 UTF-8로 설정
+import os
+os.environ["PYTHONIOENCODING"] = "utf-8"  # 출력 및 입력 기본 인코딩 설정
+
+
 class EsSetting:
 
     def __init__(self):
@@ -18,6 +24,18 @@ class EsSetting:
         self.usd_read_index = 'cal_idx_usdx_data'
         self.tmp = 'dgl_idx_expo_lst'
 
+
+class PostgreSQL:
+
+    def __init__(self):
+        self.IP = '121.138.113.10'
+        self.port = '35432'
+        self.ID = 'agens'
+        self.PW = 'agens'
+        self.dbname_cheonan = 'cheonandb'
+        self.tbname_cheonan = 'tb_sea_cach_anay_dtl'
+
+0
 
     # def sea_freight_index(self):
     #     self.read_index = 'cal_idx_expo_lst'

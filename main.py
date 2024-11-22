@@ -1,31 +1,31 @@
-from elasticsearch import Elasticsearch, helpers
+from elasticsearch import Elasticsearch
 import logging
 # ===== 항공운임의 각 모델들을 실행하는 함수 불러오기 =====
 # 수출 항공운임 예측 데이터 생성
-from models.air_freight.exp.asia.service import save_asia_pred_exp
-from models.air_freight.exp.china.service import save_china_pred_exp
-from models.air_freight.exp.euro.service import save_euro_pred_exp
-from models.air_freight.exp.usa.service import save_usa_pred_exp
+from models.freight_p.air_freight.exp.asia.service import save_asia_pred_exp
+from models.freight_p.air_freight.exp.china.service import save_china_pred_exp
+from models.freight_p.air_freight.exp.euro.service import save_euro_pred_exp
+from models.freight_p.air_freight.exp.usa.service import save_usa_pred_exp
 # 수입 항공운임 예측 데이터 생성
-from models.air_freight.imp.asia.service import save_asia_pred_imp
-from models.air_freight.imp.china.service import save_china_pred_imp
-from models.air_freight.imp.euro.service import save_euro_pred_imp
-from models.air_freight.imp.usa.service import save_usa_pred_imp
+from models.freight_p.air_freight.imp.asia.service import save_asia_pred_imp
+from models.freight_p.air_freight.imp.china.service import save_china_pred_imp
+from models.freight_p.air_freight.imp.euro import save_euro_pred_imp
+from models.freight_p.air_freight.imp.usa.service import save_usa_pred_imp
 
 # ===== 해상운임 인덱스 각 모델을 실행하는 함수 불러오기 =====
 # 해상운임 인덱스 예측 값 생성 함수
-from models.sea_freight_index.bdi_p.service import predict_bdi
-from models.sea_freight_index.ccfi_p.service import predict_ccfi
-from models.sea_freight_index.kcci_p.service import predict_kcci
-from models.sea_freight_index.hrci_p.service import predict_hrci
-from models.sea_freight_index.scfi_p.service import predict_scfi
+from models.freight_p.sea_freight_index.bdi_p.service import predict_bdi
+from models.freight_p.sea_freight_index.ccfi_p import predict_ccfi
+from models.freight_p.sea_freight_index.kcci_p import predict_kcci
+from models.freight_p.sea_freight_index.hrci_p import predict_hrci
+from models.freight_p.sea_freight_index import predict_scfi
 
 # 해상운임 인덱스 예측 값 삽입 함수
-from models.sea_freight_index.bdi_p.service import insert_bdi
-from models.sea_freight_index.ccfi_p.service import insert_ccfi
-from models.sea_freight_index.kcci_p.service import insert_kcci
-from models.sea_freight_index.hrci_p.service import insert_hrci
-from models.sea_freight_index.scfi_p.service import insert_scfi
+from models.freight_p.sea_freight_index.bdi_p.service import insert_bdi
+from models.freight_p.sea_freight_index.ccfi_p import insert_ccfi
+from models.freight_p.sea_freight_index.kcci_p import insert_kcci
+from models.freight_p.sea_freight_index.hrci_p import insert_hrci
+from models.freight_p.sea_freight_index import insert_scfi
 
 # ===== 해상운임 예측 값 =====
 
@@ -112,7 +112,7 @@ if __name__ == '__main__':
 
 
     # 해상운임 예측 내용 저장
-    from models.sea_freight.service import insert_sea_freight, dict_save_data
+    from models.freight_p.sea_freight.service import insert_sea_freight, dict_save_data
 
     try:
         insert_sea_freight(esinfo.sea_save_freight, dict_save_data)

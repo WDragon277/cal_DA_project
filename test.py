@@ -1,16 +1,12 @@
-from elasticsearch import Elasticsearch, helpers
-import logging
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error
 from sklearn.metrics import mean_absolute_error
-from sklearn.metrics import r2_score
 from statsmodels.tsa.ar_model import AutoReg
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from statsmodels.tsa.stattools import adfuller
 
-from models.air_freight.exp.asia.test import asia_data, asia_name_mae, asia_mae_dic
+from models.freight_p.air_freight.exp.asia.test import asia_data, asia_name_mae, asia_mae_dic
 from common.utils.setting import EsSetting
 from common.utils.utils import searchAPI
 
