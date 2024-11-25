@@ -41,3 +41,5 @@ input_hrci_json = gemma2.clean_json(hrci_redifined_data())
 content_2 = gemma2.get_content(input_order=input_text,
                              input_indx_info=input_hrci_info,
                              input_indx_json=input_hrci_json)
+
+test = 0
