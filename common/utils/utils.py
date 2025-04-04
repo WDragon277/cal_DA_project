@@ -144,7 +144,8 @@ def switch_idx_data(df):
 
 # 보간법 적용 함수
 def interpolation(df):
-    result = df.interpolate()
+    # result = df.interpolate() # FutureWarning code
+    result = df.infer_objects()
     return result
 
 

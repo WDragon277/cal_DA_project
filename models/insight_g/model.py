@@ -15,6 +15,10 @@ class ChatService:
     def __init__(self, model="gemma2"):
         self.model = model
 
+    def df_to_json(self, input_df):
+        input_json = input_df.to_json
+        return input_json
+
     # NaN값 삭제
     # json 타입 데이터 str 전환
     def clean_json(self, input_json):

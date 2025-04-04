@@ -30,7 +30,8 @@ def hrci_redifined_data():
 
     # 보간법 적용
     df_interpolated = interpolation(sliced_df)
-    df_interpolated_filled = df_interpolated.fillna(method='bfill')
+    # df_interpolated_filled = df_interpolated.fillna(method='bfill')
+    df_interpolated_filled = df_interpolated.bfill()
     df_interpolated_filled = df_interpolated_filled.dropna(axis=0)
 
     # 날짜 타입으로 변경
