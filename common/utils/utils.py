@@ -1,5 +1,4 @@
 import pandas as pd
-import seaborn as sns
 from elasticsearch import Elasticsearch, helpers # elasticsearch==8.8.2 필요
 from matplotlib import pyplot as plt
 
@@ -315,7 +314,3 @@ def doc_type_setting(index):
         }
     return document
 
-def draw_heatmap(df):
-    heatmap = sns.heatmap(df.corr(), annot=True, cmap='coolwarm')
-    heatmap.set_xticklabels(heatmap.get_xticklabels(), rotation=45, ha='right')
-    plt.show()
